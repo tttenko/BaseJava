@@ -12,6 +12,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         return Arrays.binarySearch(storage, 0, size, searchKey);
     }
 
+    @Override
     protected void insertResume(Resume resume, int index) {
         int insertIndex = -index - 1;
 
@@ -22,6 +23,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
         storage[insertIndex] = resume;
     }
 
+    @Override
     protected void fillRemovedResume(int index) {
         int numMoved = size - index - 1;
         if (index < size  - 1) {
