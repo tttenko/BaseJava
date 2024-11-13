@@ -28,6 +28,12 @@ bin/
 ### Mac OS ###
 .DS_Store
 
+<<<<<<< HEAD
 .idea/
 
 BaseJava.iml
+=======
+/.idea
+
+*.iml
+>>>>>>> 641a8139307f6c8f0a57db66855cdd60affa9307

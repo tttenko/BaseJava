@@ -7,6 +7,7 @@ import java.util.Arrays;
 
 public class ArrayStorage extends AbstractArrayStorage {
 
+    @Override
     protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
             if (storage[i].getUuid().equals(uuid)) {
@@ -16,11 +17,13 @@ public class ArrayStorage extends AbstractArrayStorage {
         return -1;
     }
 
-    protected void addToStorage(Resume resume, int index) {
+    @Override
+    protected void insertResume(Resume resume, int index) {
         storage[size] = resume;
     }
 
-    protected void removeFromStorage(int index) {
+    @Override
+    protected void fillRemovedResume(int index) {
         storage[index] = storage[size - 1];
     }
 }
