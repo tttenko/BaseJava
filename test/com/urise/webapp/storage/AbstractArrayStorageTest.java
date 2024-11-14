@@ -51,8 +51,6 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     public void update() {
-        Resume resume = new Resume("uuid1");
-        storage.save(resume);
         Resume updatedResume = new Resume("uuid1");
         storage.update(updatedResume);
         assertEquals(updatedResume, storage.get("uuid1"));
@@ -60,29 +58,19 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     public void delete() {
-        storage.clear();
-        Resume resume = new Resume("uuid1");
-        storage.save(resume);
         storage.delete("uuid1");
-        assertEquals(0, storage.size(), "Массив должен быть пуст после удаления");
+        assertEquals(2, storage.size(), "Массив должен уменьшиться на один");
     }
 
     @Test
     public void get() {
-        Resume resume = new Resume("uuid1");
-        storage.save(resume);
-        assertEquals(resume, storage.get("uuid1"));
+        assertEquals(resume1, storage.get("uuid1"));
     }
 
     @Test
     public void getAll() {
-        storage.size();
-        Resume resume1 = new Resume("uuid1");
-        Resume resume2 = new Resume("uuid2");
-        storage.save(resume1);
-        storage.save(resume2);
         Resume[] allResumes = storage.getAll();
-        assertArrayEquals(new Resume[]{resume1, resume2}, allResumes);
+        assertArrayEquals(new Resume[]{resume1, resume2, resume3}, allResumes);
     }
 
 
