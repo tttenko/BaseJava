@@ -76,6 +76,7 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     public void testArrayOverflow() {
+        storage.clear();
         try {
             // Заполняем хранилище до максимума
             for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
