@@ -89,7 +89,6 @@ abstract class AbstractArrayStorageTest {
 
     @Test
     public void getNotExist() throws Exception {
-        storage.get("smth");
         assertThrows(NotExistStorageException.class, () -> storage.get("smth"), "Данное резюме не существует");
     }
 }
