@@ -10,12 +10,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 abstract class AbstractArrayStorageTest {
 
-    protected Storage storage;
+    protected final Storage storage;
 
+    private final String UUID_1 = "uuid1";
+    private final String UUID_2 = "uuid2";
+    private final String UUID_3 = "uuid3";
 
-    private final Resume resume1 = new Resume("uuid1");
-    private final Resume resume2 = new Resume("uuid2");
-    private final Resume resume3 = new Resume("uuid3");
+    private final Resume RESUME_1 = new Resume(UUID_1);
+    private final Resume RESUME_2 = new Resume(UUID_2);
+    private final Resume RESUME_3 = new Resume(UUID_3);
 
     AbstractArrayStorageTest(Storage storage) {
         this.storage = storage;
@@ -24,67 +27,75 @@ abstract class AbstractArrayStorageTest {
     @BeforeEach
     void setUp() {
         storage.clear();
-        storage.save(resume1);
-        storage.save(resume2);
-        storage.save(resume3);
+        storage.save(RESUME_1);
+        storage.save(RESUME_2);
+        storage.save(RESUME_3);
     }
 
     @Test
     public void size() {
-        assertEquals(3, storage.size(), "Размер массива должен быть 3");
+        assertSize(3);
+    }
+
+
+    public void assertSize(int size) {
+        assertEquals(size, storage.size());
     }
 
     @Test
     public void clear() {
         storage.clear();
-        assertEquals(0, storage.size(), "Массив должен быть пустой");
+        assertSize(0);
+        Resume[] resume = storage.getAll();
+        assertArrayEquals(new Resume[]{}, resume);
     }
 
     @Test
     public void save() {
         storage.clear();
-        Resume resume = new Resume("uuid1");
-        storage.save(resume);
-        assertEquals(1, storage.size());
-        assertEquals(resume, storage.get("uuid1"));
+        final Resume RESUME = new Resume("uuid1");
+        storage.save(RESUME);
+        assertSize(1);
+        assertGet(RESUME);
     }
 
     @Test
     public void update() {
         Resume updatedResume = new Resume("uuid1");
         storage.update(updatedResume);
-        assertEquals(updatedResume, storage.get("uuid1"));
+        assertSame(updatedResume, storage.get("uuid1"));
     }
 
     @Test
     public void delete() {
-        storage.delete("uuid1");
-        assertEquals(2, storage.size(), "Массив должен уменьшиться на один");
+        storage.delete("uuid3");
+        assertSize(2);
+        assertThrows(NotExistStorageException.class, () -> assertGet(new Resume("uuid4")));
     }
 
     @Test
     public void get() {
-        assertEquals(resume1, storage.get("uuid1"));
+        assertGet(RESUME_1);
+    }
+
+    public void assertGet(Resume resume) {
+        assertEquals(resume, storage.get(resume.getUuid()));
     }
 
     @Test
     public void getAll() {
         Resume[] allResumes = storage.getAll();
-        assertArrayEquals(new Resume[]{resume1, resume2, resume3}, allResumes);
+        assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3}, allResumes);
     }
 
 
     @Test
     public void testArrayOverflow() {
         storage.clear();
-        try {
-            // Заполняем хранилище до максимума
-            for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume("uuid" + i));
-            }
-        } catch (StorageException e) {
-            fail("Ошибка при заполнении массива");
+        for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
+            storage.save(new Resume("uuid" + i));
         }
+
         assertThrows(StorageException.class, () -> storage.save(new Resume("new uuid")), "Резюме переполненно");
     }
 
