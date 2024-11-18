@@ -12,6 +12,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected final Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
+    protected abstract void insertResume(Resume resume, int index);
+    protected abstract void fillRemovedResume(int index);
+
     @Override
     public int size() {
         return size;
@@ -24,58 +27,38 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public final void save(Resume r) {
-        if (size >= STORAGE_LIMIT) {
-            throw new StorageException("Места для больше нет", r.getUuid());
-        }
-        int index = getIndex(r.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            insertResume(r, index);
-            size++;
-        }
-    }
-
-
-    @Override
-    public final void update(Resume resume) {
-        int index = getIndex(resume.getUuid());
-        if (index < 0) {
-            throw new NotExistStorageException(resume.getUuid());
-        } else {
-            storage[index] = resume;
-        }
-    }
-
-    @Override
-    public final void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        fillRemovedResume(index);
-        storage[size - 1] = null;
-        size--;
-    }
-
-    @Override
-    public final Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[index];
-    }
-
-    @Override
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
 
-    protected abstract int getIndex(String uuid);
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return (int) searchKey > 0;
+    }
 
-    protected abstract void insertResume(Resume resume, int index);
+    @Override
+    protected void doSave(Resume r, Object searchKey) {
+        if (size > STORAGE_LIMIT) {
+            throw new StorageException("Массив переполнен", r.getUuid());
+        }
+        insertResume(r, (int) searchKey);
+    }
 
-    protected abstract void fillRemovedResume(int index);
+    @Override
+    protected void doUpdate(Resume r, Object searchKey) {
+        storage[(int) searchKey] = r;
+    }
+
+    @Override
+    protected Resume doGet(Object searchKey) {
+        return storage[(int) searchKey];
+    }
+
+    @Override
+    protected void doDelete(Object searchKey) {
+        int index = (int) searchKey;
+        fillRemovedResume(index);
+        storage[size - 1] = null;
+        size--;
+    }
 }
