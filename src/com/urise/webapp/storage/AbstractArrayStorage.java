@@ -37,6 +37,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         }
     }
 
+
     @Override
     public final void update(Resume resume) {
         int index = getIndex(resume.getUuid());
