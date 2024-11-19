@@ -38,10 +38,11 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     protected void doSave(Resume r, Object searchKey) {
-        if (size > STORAGE_LIMIT) {
+        if (size >= STORAGE_LIMIT) {
             throw new StorageException("Массив переполнен", r.getUuid());
         }
         insertResume(r, (int) searchKey);
+        size++;
     }
 
     @Override

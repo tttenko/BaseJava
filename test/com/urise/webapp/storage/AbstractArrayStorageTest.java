@@ -92,7 +92,7 @@ abstract class AbstractArrayStorageTest {
 
 
     @Test
-    public void storageOverflow() {
+    public void storageOverflow()  {
         storage.clear();
         for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
             storage.save(new Resume("uuid" + i));
