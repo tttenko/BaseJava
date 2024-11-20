@@ -2,7 +2,7 @@ package com.urise.webapp.model;
 
 import java.util.UUID;
 
-public class Resume implements Comparable<Resume> {
+public class Resume {
     private final String uuid;
 
     public Resume() {
@@ -34,9 +34,4 @@ public class Resume implements Comparable<Resume> {
         return uuid;
     }
 
-
-    @Override
-    public int compareTo(Resume o) {
-        return this.uuid.compareTo(o.uuid);
-    }
 }
