@@ -1,10 +1,9 @@
 package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.ArrayStorage;
-import com.urise.webapp.storage.ListStorage;
-import com.urise.webapp.storage.SortedArrayStorage;
-import com.urise.webapp.storage.Storage;
+import com.urise.webapp.storage.*;
+
+import java.util.List;
 
 public class MainTestArrayStorage {
     static final Storage ARRAY_STORAGE = new ArrayStorage();
@@ -39,8 +38,6 @@ public class MainTestArrayStorage {
 
     static void printAll() {
         System.out.println("\nGet All");
-        for (Resume r : ARRAY_STORAGE.getAll()) {
-            System.out.println(r);
-        }
+        System.out.println(ARRAY_STORAGE.getAllSorted());
     }
 }

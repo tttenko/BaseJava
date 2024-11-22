@@ -5,8 +5,12 @@ import com.urise.webapp.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
-class MapStorageTest {
+
+class SearchKeyResumeMapStorageTest {
     private Storage storage;
 
     private static final String UUID_1 = "uuid1";
@@ -19,7 +23,7 @@ class MapStorageTest {
 
     @BeforeEach
     void setUp() {
-        storage = new MapStorage();
+        storage = new SearchKeyStringMapStorage();
         storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
@@ -30,7 +34,7 @@ class MapStorageTest {
         assertSize(3);
     }
 
-    void assertSize(int size){
+    void assertSize(int size) {
         assertEquals(size, storage.size());
     }
 
@@ -79,7 +83,25 @@ class MapStorageTest {
     }
 
     @Test
-    void deleteNotExist()  {
+    void deleteNotExist() {
         assertThrows(NotExistStorageException.class, () -> storage.get("smth"));
+    }
+
+    @Test
+    void getAllSorted() {
+        storage.clear();
+        Resume resume1 = new Resume("Maksim Koptenko", "uuid1");
+        Resume resume2 = new Resume("Elena Koptenko", "uuid2");
+        Resume resume3 = new Resume("Vladimir Koptenko","uuid3");
+
+        storage.save(resume1);
+        storage.save(resume2);
+        storage.save(resume3);
+
+        List<Resume> sortedStorage = storage.getAllSorted();
+
+        List<Resume> expected = Arrays.asList(resume2,resume1,resume3);
+
+        assertEquals(expected, sortedStorage);
     }
 }

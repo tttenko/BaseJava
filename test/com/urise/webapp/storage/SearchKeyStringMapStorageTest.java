@@ -5,13 +5,12 @@ import com.urise.webapp.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ListStorageTest {
+class SearchKeyStringMapStorageTest {
     private Storage storage;
 
     private static final String UUID_1 = "uuid1";
@@ -24,12 +23,11 @@ class ListStorageTest {
 
     @BeforeEach
     void setUp() {
-        storage = new ListStorage();
+        storage = new SearchKeyStringMapStorage();
         storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
     }
-
 
     @Test
     void size() {
@@ -85,7 +83,7 @@ class ListStorageTest {
     }
 
     @Test
-    void deleteNotExist() throws Exception {
+    void deleteNotExist() {
         assertThrows(NotExistStorageException.class, () -> storage.get("smth"));
     }
 

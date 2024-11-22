@@ -5,14 +5,18 @@ import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
-    protected final Resume[] storage = new Resume[STORAGE_LIMIT];
+    protected final static Resume[] storage = new Resume[STORAGE_LIMIT];
     protected int size = 0;
 
     protected abstract void insertResume(Resume resume, int index);
+
     protected abstract void fillRemovedResume(int index);
 
     @Override
@@ -24,11 +28,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public void clear() {
         Arrays.fill(storage, 0, size, null);
         size = 0;
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
     }
 
     @Override
@@ -61,5 +60,13 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         fillRemovedResume(index);
         storage[size - 1] = null;
         size--;
+    }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        return Arrays.stream(storage, 0, size)
+                .filter(s -> s != null)
+                .sorted(Comparator.comparing(Resume::getUuid))
+                .toList();
     }
 }

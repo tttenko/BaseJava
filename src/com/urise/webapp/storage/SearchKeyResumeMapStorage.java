@@ -2,30 +2,17 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class MapStorage extends AbstractStorage {
+public class SearchKeyResumeMapStorage extends AbstractStorage {
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    public int size() {
-        return storage.size();
-    }
-
-    @Override
-    public void clear() {
-        storage.clear();
-    }
-
-    @Override
-    public Resume[] getAll() {
-        return new Resume[0];
-    }
-
-    @Override
     protected Object getSearchKey(String uuid) {
-        return uuid;
+        return new Resume(uuid);
     }
 
     @Override
@@ -55,5 +42,23 @@ public class MapStorage extends AbstractStorage {
     protected void doDelete(Object searchKey) {
         String uuid = (String) searchKey;
         storage.remove(uuid);
+    }
+
+    @Override
+    public int size() {
+        return storage.size();
+    }
+
+    @Override
+    public void clear() {
+        storage.clear();
+    }
+
+    @Override
+    public List<Resume> getAllSorted() {
+        return storage.values().stream()
+                .sorted(Comparator.comparing(Resume::getFullName)
+                        .thenComparing(Resume::getUuid))
+                .toList();
     }
 }

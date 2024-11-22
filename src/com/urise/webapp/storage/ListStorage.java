@@ -5,11 +5,11 @@ import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.model.Resume;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
     private final List<Resume> storage = new ArrayList<>();
-
 
     @Override
     protected Object getSearchKey(String uuid) {
@@ -33,17 +33,17 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void doUpdate(Resume r, Object searchKey) {
-        storage.set((int)searchKey, r);
+        storage.set((int) searchKey, r);
     }
 
     @Override
     protected Resume doGet(Object searchKey) {
-        return storage.get((int)searchKey);
+        return storage.get((int) searchKey);
     }
 
     @Override
     public void doDelete(Object searchKey) {
-        storage.remove((int)searchKey);
+        storage.remove((int) searchKey);
     }
 
     @Override
@@ -57,7 +57,10 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return storage.toArray(new Resume[storage.size()]);
+    public List<Resume> getAllSorted() {
+        List<Resume> sortedStorage = new ArrayList<>(storage);
+        sortedStorage.sort(Comparator.comparing(Resume::getFullName)
+                                    .thenComparing(Resume::getUuid));
+        return sortedStorage;
     }
 }

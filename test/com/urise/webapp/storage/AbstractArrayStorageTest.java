@@ -6,6 +6,9 @@ import com.urise.webapp.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 abstract class AbstractArrayStorageTest {
@@ -46,8 +49,6 @@ abstract class AbstractArrayStorageTest {
     public void clear() {
         storage.clear();
         assertSize(0);
-        Resume[] resume = storage.getAll();
-        assertArrayEquals(new Resume[]{}, resume);
     }
 
     @Test
@@ -85,14 +86,7 @@ abstract class AbstractArrayStorageTest {
     }
 
     @Test
-    public void getAll() {
-        Resume[] allResumes = storage.getAll();
-        assertArrayEquals(new Resume[]{RESUME_1, RESUME_2, RESUME_3}, allResumes);
-    }
-
-
-    @Test
-    public void storageOverflow()  {
+    public void storageOverflow() {
         storage.clear();
         for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
             storage.save(new Resume("uuid" + i));
@@ -104,5 +98,23 @@ abstract class AbstractArrayStorageTest {
     @Test
     public void getNotExist() throws Exception {
         assertThrows(NotExistStorageException.class, () -> storage.get("smth"), "Данное резюме не существует");
+    }
+
+    @Test
+    void getAllSorted() {
+        storage.clear();
+        Resume resume1 = new Resume("Maksim Koptenko", "uuid1");
+        Resume resume2 = new Resume("Elena Koptenko", "uuid2");
+        Resume resume3 = new Resume("Vladimir Koptenko", "uuid3");
+
+        storage.save(resume1);
+        storage.save(resume2);
+        storage.save(resume3);
+
+        List<Resume> sortedStorage = storage.getAllSorted();
+
+        List<Resume> expected = Arrays.asList(resume2, resume1, resume3);
+
+        assertEquals(expected, sortedStorage);
     }
 }
