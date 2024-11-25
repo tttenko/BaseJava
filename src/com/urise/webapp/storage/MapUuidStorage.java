@@ -2,11 +2,12 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.model.Resume;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SearchKeyStringMapStorage extends AbstractStorage {
+public class MapUuidStorage extends AbstractStorage {
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -54,16 +55,10 @@ public class SearchKeyStringMapStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
+    public List<Resume> doGetAll() {
         return storage.values().stream()
-                .sorted((r1, r2) -> {
-                    int temp = r1.getFullName().compareTo(r2.getFullName());
-                    if (temp == 0) {
-                        return r1.getUuid().compareTo(r2.getUuid());
-                    }
-                    return temp;
-
-                })
+                .sorted(Comparator.comparing(Resume::getFullName)
+                                   .thenComparing(Resume::getUuid))
                 .toList();
     }
 }

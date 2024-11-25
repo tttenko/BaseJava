@@ -60,7 +60,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
+    public List<Resume> doGetAll() {
         return Arrays.stream(storage, 0, size)
                 .filter(s -> s != null)
                 .sorted(Comparator.comparing(Resume::getFullName))

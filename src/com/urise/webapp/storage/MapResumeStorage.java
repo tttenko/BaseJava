@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SearchKeyResumeMapStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage {
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
@@ -55,7 +55,7 @@ public class SearchKeyResumeMapStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
+    public List<Resume> doGetAll() {
         return storage.values().stream()
                 .sorted(Comparator.comparing(Resume::getFullName)
                         .thenComparing(Resume::getUuid))

@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class SearchKeyResumeMapStorageTest {
+class MapResumeStorageTest {
     private Storage storage;
 
     private static final String UUID_1 = "uuid1";
@@ -23,7 +23,7 @@ class SearchKeyResumeMapStorageTest {
 
     @BeforeEach
     void setUp() {
-        storage = new SearchKeyStringMapStorage();
+        storage = new MapResumeStorage();
         storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
