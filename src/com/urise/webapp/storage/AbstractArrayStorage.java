@@ -6,6 +6,7 @@ import com.urise.webapp.model.Resume;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
     protected static final int STORAGE_LIMIT = 10000;
@@ -62,7 +63,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     @Override
     public List<Resume> doGetAll() {
         return Arrays.stream(storage, 0, size)
-                .filter(s -> s != null)
+                .filter(Objects::nonNull)
                 .sorted(Comparator.comparing(Resume::getFullName))
                 .toList();
     }

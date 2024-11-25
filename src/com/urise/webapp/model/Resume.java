@@ -4,7 +4,7 @@ import java.util.UUID;
 
 public class Resume {
     private String uuid;
-    private String fullName;
+    private final String fullName;
 
     public Resume() {
         this(UUID.randomUUID().toString());
