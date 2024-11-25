@@ -67,7 +67,7 @@ class SearchKeyStringMapStorageTest {
     }
 
     protected void assertGet(Resume r) {
-        assertEquals(r, storage.get(r.getUuid()));
+        assertEquals(r, storage.get(r.getFullName()));
     }
 
     @Test
@@ -90,9 +90,9 @@ class SearchKeyStringMapStorageTest {
     @Test
     void getAllSorted() {
         storage.clear();
-        Resume resume1 = new Resume("Maksim Koptenko", "uuid1");
-        Resume resume2 = new Resume("Elena Koptenko", "uuid2");
-        Resume resume3 = new Resume("Vladimir Koptenko","uuid3");
+        Resume resume1 = new Resume("uuid1");
+        Resume resume2 = new Resume("uuid2");
+        Resume resume3 = new Resume("uuid3");
 
         storage.save(resume1);
         storage.save(resume2);
@@ -100,7 +100,7 @@ class SearchKeyStringMapStorageTest {
 
         List<Resume> sortedStorage = storage.getAllSorted();
 
-        List<Resume> expected = Arrays.asList(resume2,resume1,resume3);
+        List<Resume> expected = Arrays.asList(resume1,resume2,resume3);
 
         assertEquals(expected, sortedStorage);
     }

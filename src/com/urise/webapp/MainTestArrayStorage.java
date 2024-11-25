@@ -1,9 +1,8 @@
 package com.urise.webapp;
 
 import com.urise.webapp.model.Resume;
-import com.urise.webapp.storage.*;
-
-import java.util.List;
+import com.urise.webapp.storage.ArrayStorage;
+import com.urise.webapp.storage.Storage;
 
 public class MainTestArrayStorage {
     static final Storage ARRAY_STORAGE = new ArrayStorage();

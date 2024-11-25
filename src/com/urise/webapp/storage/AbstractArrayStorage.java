@@ -1,11 +1,8 @@
 package com.urise.webapp.storage;
 
-import com.urise.webapp.exception.ExistStorageException;
-import com.urise.webapp.exception.NotExistStorageException;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
@@ -66,7 +63,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     public List<Resume> getAllSorted() {
         return Arrays.stream(storage, 0, size)
                 .filter(s -> s != null)
-                .sorted(Comparator.comparing(Resume::getUuid))
+                .sorted(Comparator.comparing(Resume::getFullName))
                 .toList();
     }
 }

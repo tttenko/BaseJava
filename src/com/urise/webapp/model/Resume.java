@@ -3,21 +3,23 @@ package com.urise.webapp.model;
 import java.util.UUID;
 
 public class Resume {
-    private final String uuid;
     private String fullName;
+    private String uuid;
+
+    public Resume(String fullName) {
+        this.fullName = fullName;
+        this.uuid = UUID.randomUUID().toString();
+
+    }
 
     public Resume() {
-        this(UUID.randomUUID().toString());
+        this("");
     }
 
-    public Resume(String uuid) {
-        this.uuid = uuid;
-    }
-
-    public Resume(String fullName, String uuid) {
-        this.fullName = fullName;
-        this.uuid = uuid;
-    }
+//    public Resume(String fullName, String uuid) {
+//        this.fullName = fullName;
+//        this.uuid = uuid;
+//    }
 
     public String getUuid() {
         return uuid;

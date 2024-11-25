@@ -36,13 +36,13 @@ public abstract class AbstractStorage implements Storage {
 
     @Override
     public void save(Resume r) {
-        Object searchKey = findNotExistingSearchKey(r.getUuid());
+        Object searchKey = findNotExistingSearchKey(r.getFullName());
         doSave(r, searchKey);
     }
 
     @Override
     public void update(Resume r) {
-        Object searchKey = findExistingSearchKey(r.getUuid());
+        Object searchKey = findExistingSearchKey(r.getFullName());
         doUpdate(r, searchKey);
     }
 

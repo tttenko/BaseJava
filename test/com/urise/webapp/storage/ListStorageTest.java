@@ -5,7 +5,6 @@ import com.urise.webapp.model.Resume;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -69,7 +68,7 @@ class ListStorageTest {
     }
 
     protected void assertGet(Resume r) {
-        assertEquals(r, storage.get(r.getUuid()));
+        assertEquals(r, storage.get(r.getFullName()));
     }
 
     @Test
@@ -79,7 +78,7 @@ class ListStorageTest {
 
     @Test
     void delete() {
-        storage.delete("uuid3");
+        storage.delete(UUID_3);
         assertSize(2);
         assertThrows(NotExistStorageException.class, () -> storage.get("uuid3"));
     }
@@ -92,9 +91,9 @@ class ListStorageTest {
     @Test
     void getAllSorted() {
         storage.clear();
-        Resume resume1 = new Resume("Maksim Koptenko", "uuid1");
-        Resume resume2 = new Resume("Elena Koptenko", "uuid2");
-        Resume resume3 = new Resume("Vladimir Koptenko","uuid3");
+        Resume resume1 = new Resume("uuid1");
+        Resume resume2 = new Resume("uuid2");
+        Resume resume3 = new Resume("uuid3");
 
         storage.save(resume1);
         storage.save(resume2);
@@ -102,7 +101,7 @@ class ListStorageTest {
 
         List<Resume> sortedStorage = storage.getAllSorted();
 
-        List<Resume> expected = Arrays.asList(resume2,resume1,resume3);
+        List<Resume> expected = Arrays.asList(resume1,resume2,resume3);
 
         assertEquals(expected, sortedStorage);
     }
