@@ -9,9 +9,9 @@ import java.util.Objects;
 
 public class MainCollections {
 
-    private static final Resume RESUME_1 = new Resume("uuid1");
-    private static final Resume RESUME_2 = new Resume("uuid2");
-    private static final Resume RESUME_3 = new Resume("uuid3");
+    private static final Resume RESUME_1 = new Resume("uuid1", "Name1");
+    private static final Resume RESUME_2 = new Resume("uuid2", "Name2");
+    private static final Resume RESUME_3 = new Resume("uuid3", "Name3");
 
     public static void main(String[] args) {
         Collection<Resume> collection = new ArrayList<>();

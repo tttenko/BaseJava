@@ -16,10 +16,10 @@ public class AbstractArrayStorageTest extends AbstractStorageTest {
     public void storageOverflow() {
         storage.clear();
         for (int i = 0; i < AbstractArrayStorage.STORAGE_LIMIT; i++) {
-            storage.save(new Resume("uuid" + i));
+            storage.save(new Resume("Name" + i));
         }
 
-        assertThrows(StorageException.class, () -> storage.save(new Resume("new uuid")), "Резюме переполненно");
+        assertThrows(StorageException.class, () -> storage.save(new Resume("New Name")), "Резюме переполненно");
 
     }
 

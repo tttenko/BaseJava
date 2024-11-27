@@ -56,9 +56,6 @@ public class ListStorage extends AbstractStorage<Integer> {
 
     @Override
     public List<Resume> doGetAll() {
-        List<Resume> sortedStorage = new ArrayList<>(storage);
-        sortedStorage.sort(Comparator.comparing(Resume::getFullName)
-                                    .thenComparing(Resume::getUuid));
-        return sortedStorage;
+        return new ArrayList<>(storage);
     }
 }

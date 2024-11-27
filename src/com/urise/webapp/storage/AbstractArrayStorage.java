@@ -62,9 +62,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
 
     @Override
     public List<Resume> doGetAll() {
-        return Arrays.stream(storage, 0, size)
-                .filter(Objects::nonNull)
-                .sorted(Comparator.comparing(Resume::getFullName))
-                .toList();
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
     }
 }
