@@ -7,42 +7,42 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MapResumeStorage extends AbstractStorage {
+public class MapResumeStorage extends AbstractStorage<Resume> {
     private final Map<String, Resume> storage = new HashMap<>();
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Resume getSearchKey(String uuid) {
         return new Resume(uuid);
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        Resume resume = (Resume) searchKey;
-        return storage.containsKey(resume.getFullName());
+    protected boolean isExist(Resume searchKey) {
+
+        return storage.containsKey(searchKey.getFullName());
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
-        Resume resume = (Resume) searchKey;
-        storage.put(resume.getFullName(), r);
+    protected void doSave(Resume r, Resume searchKey) {
+
+        storage.put(searchKey.getFullName(), r);
     }
 
     @Override
-    protected void doUpdate(Resume r, Object searchKey) {
-        Resume resume = (Resume) searchKey;
-        storage.put(resume.getFullName(), r);
+    protected void doUpdate(Resume r, Resume searchKey) {
+
+        storage.put(searchKey.getFullName(), r);
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
-        Resume resume = (Resume) searchKey;
-        return storage.get(resume.getFullName());
+    protected Resume doGet(Resume searchKey) {
+
+        return storage.get(searchKey.getFullName());
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
-        Resume resume = (Resume) searchKey;
-        storage.remove(resume.getFullName());
+    protected void doDelete(Resume searchKey) {
+
+        storage.remove(searchKey.getFullName());
     }
 
     @Override
