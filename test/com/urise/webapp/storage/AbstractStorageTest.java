@@ -67,7 +67,7 @@ public class AbstractStorageTest {
 
     @Test
     public void delete() {
-        storage.delete("");
+        storage.delete(UUID_3);
         assertSize(2);
         assertThrows(NotExistStorageException.class, () -> storage.get("uuid3"));
     }

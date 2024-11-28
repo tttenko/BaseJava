@@ -19,7 +19,7 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
 
     @Override
     protected void doSave(Resume r, Resume searchKey) {
-        storage.put(searchKey.getUuid(), r);
+        storage.put(r.getUuid(), r);
     }
 
     @Override
