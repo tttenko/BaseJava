@@ -1,11 +1,17 @@
 package com.urise.webapp.model;
 
+import javax.swing.*;
+import java.util.EnumMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
 public class Resume {
     private final String uuid;
     private final String fullName;
+
+    Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+    Map<SectionType, Section> sections = new EnumMap<>(SectionType.class);
 
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
