@@ -14,8 +14,7 @@ public class MainFile {
     }
 
     public static void printAllFiles(Path dir) {
-        try {
-            DirectoryStream<Path> allFiles = Files.newDirectoryStream(dir);
+        try (DirectoryStream<Path> allFiles = Files.newDirectoryStream(dir)){
             for (Path path : allFiles) {
                 if (Files.isRegularFile(path)) {
                     System.out.println("File: " + path.getFileName());
