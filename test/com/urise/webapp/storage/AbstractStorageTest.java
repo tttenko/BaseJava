@@ -26,38 +26,10 @@ public class AbstractStorageTest {
     private static final Resume R4;
 
     static {
-        R1 = new Resume(UUID_1, "Name1");
-        R2 = new Resume(UUID_2, "Name2");
-        R3 = new Resume(UUID_3, "Name3");
-        R4 = new Resume(UUID_4, "Name4");
-
-        R1.addContact(ContactType.PHONE, "+79953220959");
-        R1.addContact(ContactType.MOBILE, "No");
-        R1.addContact(ContactType.HOME_PHONE, "No");
-        R1.addContact(ContactType.TELEGRAM, "@tttenko");
-        R1.addContact(ContactType.MAIL, "tttenko37@gmail.com");
-        R1.addContact(ContactType.LINKEDIN, "No");
-        R1.addContact(ContactType.GITHUB, "tttenko");
-        R1.addContact(ContactType.STATCKOVERFLOW, "No");
-        R1.addContact(ContactType.HOME_PAGE, "No");
-
-        R1.addSection(SectionType.PERSONAL, new ListSection("Коммуникабельность", "Пунктуальность", "Стрессоустойчивость" ));
-        R1.addSection(SectionType.OBJECTIVE, new TextSection("Junior Java Developer"));
-        R1.addSection(SectionType.ACHIEVEMENT, new TextSection("No"));
-
-        R1.addSection(SectionType.EDUCATION, new OrganizationSection(
-                new Organization("BaseJava", "https://topjava.ru/basejava",
-                        new Organization.Position(2024, Month.AUGUST, "Junior", "BaseJava"))));
-
-        R1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
-                new Organization("BaseJava, TopJava", "https://topjava.ru/basejava",
-                        new Organization.Position(2024, Month.AUGUST, 2025, Month.SEPTEMBER, "Junior", "BaseJava, TopJava"))
-        ));
-
-        R1.addSection(SectionType.EXPERIENCE, new OrganizationSection(
-                new Organization("TopJava, MasterJava", "https://topjava.ru/masterjava",
-                        new Organization.Position(2024, Month.JANUARY, 2026, Month.NOVEMBER, "Middle", "TopJava, MasterJava"))
-        ));
+        R1 = ResumeTestData.createResume(UUID_1, "name1");
+        R2 = ResumeTestData.createResume(UUID_2, "name2");
+        R3 = ResumeTestData.createResume(UUID_3, "name3");
+        R4 = ResumeTestData.createResume(UUID_4, "name4");
     }
 
     AbstractStorageTest(Storage storage) {

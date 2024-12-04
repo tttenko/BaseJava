@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -78,14 +79,24 @@ public abstract class AbstractFileStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> doGetAll() {
-        return List.of();
+        List<Resume> listResume = new ArrayList<>();
+        try (DirectoryStream<Path> list = Files.newDirectoryStream(directory)) {
+            for (Path path : list) {
+                if (path != null) {
+                    listResume.add(doGet(path));
+                }
+            }
+        } catch (IOException e) {
+            throw new StorageException("Directory error ready because directory is null", null);
+        }
+        return listResume;
     }
 
     @Override
     public int size() {
         String[] list = directory.toFile().list();
         if (list == null) {
-            throw new StorageException("Directory read error", null);
+            throw new StorageException("Directory error ready because directory is null", null);
         }
         return list.length;
     }

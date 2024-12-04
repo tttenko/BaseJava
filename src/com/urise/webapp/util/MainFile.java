@@ -8,14 +8,14 @@ import java.nio.file.Path;
 public class MainFile {
 
     public static void main(String[] args) {
-        Path path = Path.of("C:\\Users\\User\\IdeaProjects\\BaseJava\\src\\com\\urise\\webapp");
+        Path path = Path.of("C:\\Users\\tttenko\\IdeaProjects\\BaseJava\\BaseJava\\src");
 
         printAllFiles(path);
     }
 
     public static void printAllFiles(Path dir) {
-        try (DirectoryStream<Path> allFiles = Files.newDirectoryStream(dir)){
-            for (Path path : allFiles) {
+       try (DirectoryStream<Path> list = Files.newDirectoryStream(dir)) {
+            for (Path path : list) {
                 if (Files.isRegularFile(path)) {
                     System.out.println("File: " + path.getFileName());
                 } else if (Files.isDirectory(path)) {
@@ -24,7 +24,7 @@ public class MainFile {
                 }
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+           throw new RuntimeException(e);
+       }
     }
 }
