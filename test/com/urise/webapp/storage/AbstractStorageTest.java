@@ -6,12 +6,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 
+import java.io.File;
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AbstractStorageTest {
+    protected static final Path STORAGE_DIR = Path.of("C:\\Users\\tttenko\\IdeaProjects\\BaseJava\\BaseJava\\storage");
 
     protected final Storage storage;
 
@@ -70,7 +73,7 @@ public class AbstractStorageTest {
     public void update() {
         Resume updatedResume = new Resume("uuid1", "New Name");
         storage.update(updatedResume);
-        assertSame(updatedResume, storage.get("uuid1"));
+        assertEquals(updatedResume, storage.get("uuid1"));
     }
 
     @Test

@@ -4,7 +4,7 @@ package com.urise.webapp.storage;
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,7 +43,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<Path> {
     protected void doSave(Resume r, Path path) {
         try {
             Files.createFile(path);
-            doWrite(r, path);
+            doWrite(r, new BufferedOutputStream(new FileOutputStream(path.toFile())));
         } catch (IOException e) {
             throw new StorageException("IO Exception", path.getFileName().toString(), e);
         }
@@ -52,7 +52,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume r, Path path) {
         try {
-            doWrite(r, path);
+            doWrite(r, new BufferedOutputStream(new FileOutputStream(path.toFile())));
         } catch (IOException e) {
             throw new StorageException("File write error", r.getUuid(), e);
         }
@@ -61,7 +61,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return doRead(path);
+            return doRead(new BufferedInputStream(new FileInputStream(path.toFile())));
         } catch (IOException e) {
             throw new StorageException("File read error", path.getFileName().toString(), e);
         }
@@ -114,6 +114,6 @@ public abstract class AbstractFileStorage extends AbstractStorage<Path> {
         }
     }
 
-    protected abstract void doWrite(Resume r, Path path) throws IOException;
-    protected abstract Resume doRead(Path path) throws IOException;
+    protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
+    protected abstract Resume doRead(InputStream is) throws IOException;
 }
