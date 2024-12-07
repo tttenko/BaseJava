@@ -4,26 +4,24 @@ import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
 
 import java.io.*;
-import java.nio.file.Path;
 
-public class ObjectStreamStorage extends AbstractFileStorage {
-    public ObjectStreamStorage(Path directory) {
-        super(directory);
-    }
+public class ObjectStreamSerializer implements ChoiceSerializer {
 
     @Override
-    protected void doWrite(Resume r, OutputStream os) throws IOException {
+    public void doWrite(Resume r, OutputStream os) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
             oos.writeObject(r);
+        } catch (IOException e) {
+            throw new StorageException("Write error file", null);
         }
     }
 
     @Override
-    protected Resume doRead(InputStream is) throws IOException {
+    public Resume doRead(InputStream is) throws IOException {
         try (ObjectInputStream iis = new ObjectInputStream(is)) {
             return (Resume) iis.readObject();
         } catch (ClassNotFoundException e) {
-            throw new StorageException("Error read resume", null, e);
+            throw new StorageException("Read error file", null);
         }
     }
 }

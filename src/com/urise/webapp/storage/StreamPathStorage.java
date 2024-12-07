@@ -12,11 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AbstractFileStorage extends AbstractStorage<Path> {
+public class StreamPathStorage extends AbstractStorage<Path> {
     private final Path directory;
+    private final ChoiceSerializer choiceSerializer;
 
-    public AbstractFileStorage(Path directory) {
-        Objects.requireNonNull(directory, "directory must notbe null");
+    public StreamPathStorage(Path directory, ChoiceSerializer choiceSerializer) {
+        Objects.requireNonNull(directory, "directory must not be null");
 
         if (!Files.isDirectory(directory)) {
             throw new IllegalArgumentException(directory.toAbsolutePath() + " is not directory");
@@ -25,8 +26,8 @@ public abstract class AbstractFileStorage extends AbstractStorage<Path> {
         if (!Files.isWritable(directory) || !Files.isReadable(directory)) {
             throw new IllegalArgumentException(directory.toAbsolutePath() + " is not directory");
         }
-
         this.directory = directory;
+        this.choiceSerializer = choiceSerializer;
     }
 
     @Override
@@ -43,7 +44,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<Path> {
     protected void doSave(Resume r, Path path) {
         try {
             Files.createFile(path);
-            doWrite(r, new BufferedOutputStream(new FileOutputStream(path.toFile())));
+            choiceSerializer.doWrite(r, new BufferedOutputStream(new FileOutputStream(path.toFile())));
         } catch (IOException e) {
             throw new StorageException("IO Exception", path.getFileName().toString(), e);
         }
@@ -52,7 +53,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume r, Path path) {
         try {
-            doWrite(r, new BufferedOutputStream(new FileOutputStream(path.toFile())));
+            choiceSerializer.doWrite(r, new BufferedOutputStream(new FileOutputStream(path.toFile())));
         } catch (IOException e) {
             throw new StorageException("File write error", r.getUuid(), e);
         }
@@ -61,7 +62,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return doRead(new BufferedInputStream(new FileInputStream(path.toFile())));
+            return choiceSerializer.doRead(new BufferedInputStream(new FileInputStream(path.toFile())));
         } catch (IOException e) {
             throw new StorageException("File read error", path.getFileName().toString(), e);
         }
@@ -113,7 +114,4 @@ public abstract class AbstractFileStorage extends AbstractStorage<Path> {
             throw new RuntimeException(e);
         }
     }
-
-    protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
-    protected abstract Resume doRead(InputStream is) throws IOException;
 }
