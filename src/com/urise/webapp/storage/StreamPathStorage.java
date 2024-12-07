@@ -44,7 +44,7 @@ public class StreamPathStorage extends AbstractStorage<Path> {
     protected void doSave(Resume r, Path path) {
         try {
             Files.createFile(path);
-            choiceSerializer.doWrite(r, new BufferedOutputStream(new FileOutputStream(path.toFile())));
+            choiceSerializer.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("IO Exception", path.getFileName().toString(), e);
         }
@@ -53,7 +53,7 @@ public class StreamPathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Resume r, Path path) {
         try {
-            choiceSerializer.doWrite(r, new BufferedOutputStream(new FileOutputStream(path.toFile())));
+            choiceSerializer.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("File write error", r.getUuid(), e);
         }
@@ -62,7 +62,7 @@ public class StreamPathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return choiceSerializer.doRead(new BufferedInputStream(new FileInputStream(path.toFile())));
+            return choiceSerializer.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("File read error", path.getFileName().toString(), e);
         }
