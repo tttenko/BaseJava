@@ -8,7 +8,7 @@ import java.io.*;
 public class ObjectStreamSerializer implements ChoiceSerializer {
 
     @Override
-    public void doWrite(Resume r, OutputStream os) throws IOException {
+    public void doWrite(Resume r, OutputStream os) {
         try (ObjectOutputStream oos = new ObjectOutputStream(os)) {
             oos.writeObject(r);
         } catch (IOException e) {
