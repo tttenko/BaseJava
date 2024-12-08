@@ -3,17 +3,18 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.serializer.ChoiceSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class StreamFileStorage extends AbstractStorage<File> {
+public class FileStorage extends AbstractStorage<File> {
     private final File directory;
     private final ChoiceSerializer choiceSerializer;
 
-    protected StreamFileStorage(File directory, ChoiceSerializer choiceSerializer) {
+    protected FileStorage(File directory, ChoiceSerializer choiceSerializer) {
         Objects.requireNonNull(directory, "directory must not be null");
         if (!directory.isDirectory()) {
             throw new IllegalArgumentException(directory.getAbsolutePath() + " is not directory");
@@ -28,7 +29,7 @@ public class StreamFileStorage extends AbstractStorage<File> {
 
     @Override
     public void clear() {
-        File[] files = directory.listFiles();
+        File[] files = returnArrayFiles(directory);
         if (files != null) {
             for (File file : files) {
                 doDelete(file);
@@ -38,7 +39,7 @@ public class StreamFileStorage extends AbstractStorage<File> {
 
     @Override
     public int size() {
-        String[] list = directory.list();
+        File[] list = returnArrayFiles(directory);
         if (list == null) {
             throw new StorageException("Directory read error", null);
         }
@@ -92,7 +93,7 @@ public class StreamFileStorage extends AbstractStorage<File> {
 
     @Override
     protected List<Resume> doGetAll() {
-        File[] files = directory.listFiles();
+        File[] files = returnArrayFiles(directory);
         if (files == null) {
             throw new StorageException("Directory read error", null);
         }
@@ -101,5 +102,9 @@ public class StreamFileStorage extends AbstractStorage<File> {
             list.add(doGet(file));
         }
         return list;
+    }
+
+    private File[] returnArrayFiles(File directory) {
+        return directory.listFiles();
     }
 }

@@ -3,6 +3,7 @@ package com.urise.webapp.storage;
 
 import com.urise.webapp.exception.StorageException;
 import com.urise.webapp.model.Resume;
+import com.urise.webapp.storage.serializer.ChoiceSerializer;
 
 import java.io.*;
 import java.nio.file.DirectoryStream;
@@ -11,12 +12,13 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Stream;
 
-public class StreamPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
     private final ChoiceSerializer choiceSerializer;
 
-    public StreamPathStorage(Path directory, ChoiceSerializer choiceSerializer) {
+    public PathStorage(Path directory, ChoiceSerializer choiceSerializer) {
         Objects.requireNonNull(directory, "directory must not be null");
 
         if (!Files.isDirectory(directory)) {
@@ -44,6 +46,11 @@ public class StreamPathStorage extends AbstractStorage<Path> {
     protected void doSave(Resume r, Path path) {
         try {
             Files.createFile(path);
+        } catch (IOException e) {
+            throw new StorageException("Not possible to create a file", path.getFileName().toString(), e);
+        }
+
+        try {
             choiceSerializer.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("IO Exception", path.getFileName().toString(), e);
@@ -104,12 +111,8 @@ public class StreamPathStorage extends AbstractStorage<Path> {
 
     @Override
     public void clear() {
-        try (DirectoryStream<Path> allFiles = Files.newDirectoryStream(directory)) {
-            for (Path path : allFiles) {
-                if (path != null) {
-                    doDelete(path);
-                }
-            }
+        try (Stream<Path> directoryPath = Files.list(directory)) {
+            directoryPath.forEach(path -> doDelete(path));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
