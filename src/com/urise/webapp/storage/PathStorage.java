@@ -49,12 +49,7 @@ public class PathStorage extends AbstractStorage<Path> {
         } catch (IOException e) {
             throw new StorageException("Not possible to create a file", path.getFileName().toString(), e);
         }
-
-        try {
-            choiceSerializer.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
-        } catch (IOException e) {
-            throw new StorageException("IO Exception", path.getFileName().toString(), e);
-        }
+        doUpdate(r, path);
     }
 
     @Override
@@ -87,26 +82,13 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> doGetAll() {
-        List<Resume> listResume = new ArrayList<>();
-        try (DirectoryStream<Path> list = Files.newDirectoryStream(directory)) {
-            for (Path path : list) {
-                if (path != null) {
-                    listResume.add(doGet(path));
-                }
-            }
-        } catch (IOException e) {
-            throw new StorageException("Directory error ready because directory is null", null);
-        }
-        return listResume;
+        return returnList();
     }
 
     @Override
     public int size() {
-        String[] list = directory.toFile().list();
-        if (list == null) {
-            throw new StorageException("Directory error ready because directory is null", null);
-        }
-        return list.length;
+        List<Resume> listResume = returnList();
+        return  listResume.size();
     }
 
     @Override
@@ -116,5 +98,15 @@ public class PathStorage extends AbstractStorage<Path> {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private List<Resume> returnList () {
+        List<Resume> listResume = new ArrayList<>();
+        try(Stream<Path> streamPath = Files.list(directory)) {
+            streamPath.forEach(path -> listResume.add(doGet(path)));
+        } catch (IOException e) {
+            throw new StorageException("Directory read error because directory is null", null);
+        }
+        return listResume;
     }
 }
