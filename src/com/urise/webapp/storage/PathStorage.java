@@ -6,7 +6,6 @@ import com.urise.webapp.model.Resume;
 import com.urise.webapp.storage.serializer.ChoiceSerializer;
 
 import java.io.*;
-import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
