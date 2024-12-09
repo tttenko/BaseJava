@@ -1,4 +1,4 @@
-package com.urise.webapp.util;
+package com.urise.webapp.main;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;

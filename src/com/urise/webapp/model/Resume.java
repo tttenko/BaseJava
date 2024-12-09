@@ -51,6 +51,7 @@ public class Resume implements Serializable {
     public void addSection(SectionType type, Section section) {
         sections.put(type, section);
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
