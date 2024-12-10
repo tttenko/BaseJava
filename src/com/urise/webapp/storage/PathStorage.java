@@ -11,6 +11,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
@@ -81,31 +82,32 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> doGetAll() {
-        return returnList();
+        try (Stream<Path> streamPath = getStream()) {
+            return streamPath
+                    .map(this::doGet)
+                    .toList();
+        }
     }
 
     @Override
     public int size() {
-        List<Resume> listResume = returnList();
-        return  listResume.size();
+        try (Stream<Path> streamPath = getStream()) {
+            return (int) streamPath.count();
+        }
     }
 
     @Override
     public void clear() {
-        try (Stream<Path> directoryPath = Files.list(directory)) {
+        try (Stream<Path> directoryPath = getStream()) {
             directoryPath.forEach(this::doDelete);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
         }
     }
 
-    private List<Resume> returnList () {
-        List<Resume> listResume = new ArrayList<>();
-        try(Stream<Path> streamPath = Files.list(directory)) {
-            streamPath.forEach(path -> listResume.add(doGet(path)));
+    private Stream<Path> getStream() {
+        try {
+            return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Directory read error because directory is null", null);
+            throw new StorageException("Error. Directory is null", null);
         }
-        return listResume;
     }
 }
