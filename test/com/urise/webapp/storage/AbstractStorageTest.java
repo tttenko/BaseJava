@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -113,7 +114,7 @@ public class AbstractStorageTest {
 
         List<Resume> sortedStorage = storage.getAllSorted();
 
-        List<Resume> expected = Arrays.asList(resume1, resume2, resume3);
+        List<Resume> expected = new ArrayList<>(Arrays.asList(resume1, resume2, resume3));
 
         assertEquals(expected, sortedStorage);
     }

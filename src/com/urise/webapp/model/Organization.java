@@ -20,6 +20,14 @@ public class Organization implements Serializable {
         this.positions = positions;
     }
 
+    public List<Position> getPositions() {
+        return positions;
+    }
+
+    public Link getHomePage() {
+        return homePage;
+    }
+
     public Organization(String name, String url, Position... positions) {
         this(new Link(name, url), Arrays.asList(positions));
     }

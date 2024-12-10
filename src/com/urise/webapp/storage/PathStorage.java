@@ -85,7 +85,7 @@ public class PathStorage extends AbstractStorage<Path> {
         try (Stream<Path> streamPath = getStream()) {
             return streamPath
                     .map(this::doGet)
-                    .toList();
+                    .collect(Collectors.toCollection(ArrayList::new));
         }
     }
 
