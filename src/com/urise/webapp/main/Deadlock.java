@@ -6,11 +6,7 @@ public class Deadlock extends Thread {
         Thread thread_1 = new Thread(() -> {
             synchronized (lock1) {
                 System.out.println(Thread.currentThread() + " захватил lock1");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleeps();
                 synchronized ((lock2)) {
                     System.out.println(Thread.currentThread() + " захватил lock2");
                 }
@@ -20,11 +16,7 @@ public class Deadlock extends Thread {
         Thread thread_2 = new Thread(() -> {
             synchronized (lock2) {
                 System.out.println(Thread.currentThread() + " захватил lock1");
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
+                sleeps();
                 synchronized ((lock1)) {
                     System.out.println(Thread.currentThread() + " захватил lock2");
                 }
@@ -33,6 +25,13 @@ public class Deadlock extends Thread {
 
         thread_1.start();
         thread_2.start();
+    }
+    private final static void sleeps() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
 
