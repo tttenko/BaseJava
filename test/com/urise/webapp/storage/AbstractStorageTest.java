@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AbstractStorageTest {
     protected static final File STORAGE_DIR_1 = new File("C:\\Users\\tttenko\\IdeaProjects\\BaseJava\\BaseJava\\storage");
     protected static final Path STORAGE_DIR_2 = Path.of("C:\\Users\\tttenko\\IdeaProjects\\BaseJava\\BaseJava\\storage");
+    protected static final Path STORAGE_DIR_3 = Path.of("C:\\Users\\User\\IdeaProjects\\BaseJava\\storage");
 
     protected final Storage storage;
 
