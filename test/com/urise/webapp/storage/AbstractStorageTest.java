@@ -30,11 +30,18 @@ public class AbstractStorageTest {
     private static final Resume R3;
     private static final Resume R4;
 
-    static {
+    /*static {
         R1 = ResumeTestData.createResume(UUID_1, "name1");
         R2 = ResumeTestData.createResume(UUID_2, "name2");
         R3 = ResumeTestData.createResume(UUID_3, "name3");
         R4 = ResumeTestData.createResume(UUID_4, "name4");
+    }*/
+
+    static {
+        R1 = new Resume(UUID_1, "name1");
+        R2 = new Resume(UUID_2, "name2");
+        R3 = new Resume(UUID_3, "name3");
+        R4 = new Resume(UUID_4, "name4");
     }
 
     AbstractStorageTest(Storage storage) {
